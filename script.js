@@ -1,4 +1,17 @@
-/* ========== Theme Handling ========== */
+/* =========================
+   Debug toggle (press "D")
+   ========================= */
+document.addEventListener('keydown', (e) => {
+  if (e.key && e.key.toLowerCase() === 'd') {
+    const v = getComputedStyle(document.documentElement)
+      .getPropertyValue('--debug').trim();
+    document.documentElement.style.setProperty('--debug', v === '1' ? '0' : '1');
+  }
+});
+
+/* =========================
+   Theme handling
+   ========================= */
 const root = document.documentElement;
 const toggle = document.getElementById('themeToggle');
 
@@ -25,19 +38,18 @@ if (toggle) {
   applyTheme(getStoredTheme());
 }
 
-/* ========== Placeholder Mounts ========== */
+/* =========================
+   Demo mounts
+   ========================= */
 function mountAnimationDemo() {
   const el = document.getElementById('animationMount');
   if (!el) return;
   el.innerHTML = '';
   const dot = document.createElement('div');
-  dot.style.width = '16px';
-  dot.style.height = '16px';
-  dot.style.borderRadius = '50%';
-  dot.style.background = 'var(--accent)';
-  dot.style.position = 'relative';
-  dot.style.left = '0';
-  dot.style.transition = 'left 400ms linear';
+  Object.assign(dot.style, {
+    width: '16px', height: '16px', borderRadius: '50%', background: 'var(--accent)',
+    position: 'relative', left: '0', transition: 'left 400ms linear'
+  });
   el.appendChild(dot);
 
   let dir = 1;
@@ -61,60 +73,117 @@ function mountExperienceDemo() {
   `;
 }
 
-/* ========== Header text fitting (fills 100% of .header-measure width) ========== */
-(function fitHeader() {
-  const measureEl = document.querySelector('#header .header-measure');
-  const textEl = document.getElementById('headerText');
-  if (!measureEl || !textEl) return;
+/* =========================
+   Header text fitting
+   ========================= */
+(function fitHeader(){
+  const measure = document.querySelector('#header .header-measure');
+  const text = document.getElementById('headerText');
+  if(!measure || !text) return;
 
-  textEl.style.whiteSpace = 'nowrap';
-  textEl.style.display = 'inline-block';
-  textEl.style.width = 'auto';
-
-  function targetWidth() {
-    // The measurement box already includes 3% gutters on each side
-    return measureEl.clientWidth;
-  }
-
-  function fit() {
-    const maxW = targetWidth();
-    if (maxW <= 0) return;
-
-    textEl.style.fontSize = '50px';
-    let low = 6, high = 2400;
-    for (let i = 0; i < 22; i++) {
-      const mid = (low + high) / 2;
-      textEl.style.fontSize = mid + 'px';
-      const w = textEl.scrollWidth;
-      if (w > maxW) high = mid; else low = mid;
-    }
-    textEl.style.fontSize = (low - 0.5) + 'px';
-  }
-
-  if ('ResizeObserver' in window) {
-    const ro = new ResizeObserver(fit);
-    ro.observe(measureEl);
-  } else {
-    window.addEventListener('resize', fit, { passive: true });
-  }
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(fit);
-  } else {
-    setTimeout(fit, 0);
-  }
-
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) fit();
+  Object.assign(text.style, {
+    whiteSpace:'nowrap',
+    display:'inline-block',
+    width:'auto'
   });
 
+  const fit = ()=>{
+    const maxW = measure.clientWidth;
+    if(maxW <= 0) return;
+    text.style.fontSize='50px';
+    let lo = 6, hi = 2400;
+    for(let i=0;i<22;i++){
+      const mid = (lo+hi)/2;
+      text.style.fontSize = mid + 'px';
+      (text.scrollWidth > maxW) ? hi = mid : lo = mid;
+    }
+    text.style.fontSize = (lo - 0.5) + 'px';
+  };
+
+  // Debounce via rAF to avoid thrashing
+  let scheduled = false;
+  const scheduleFit = ()=>{
+    if(scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(()=>{
+      scheduled = false;
+      fit();
+    });
+  };
+
+  if('ResizeObserver' in window){
+    const ro = new ResizeObserver(scheduleFit);
+    ro.observe(measure);
+  } else {
+    window.addEventListener('resize', scheduleFit, {passive:true});
+  }
+
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(scheduleFit);
+  } else {
+    setTimeout(scheduleFit, 0);
+  }
+
+  document.addEventListener('visibilitychange', ()=>{
+    if(!document.hidden) scheduleFit();
+  });
+
+  // Initial fit
   fit();
 })();
 
+/* =========================
+   Seamless Marquee
+   ========================= */
+function initMarquee(){
+  const root = document.querySelector('#marquee .marquee');
+  if(!root) return;
 
+  const viewport = root.querySelector('.marquee__viewport');
+  const track = root.querySelector('.marquee__track');
+  const firstItem = root.querySelector('.marquee__item');
+  if(!viewport || !track || !firstItem) return;
 
-/* ========== Mount demos on DOM ready ========== */
+  // Options
+  const speedSec = Number(root.dataset.speed) || 18;            // 1× speed baseline
+  const gap = Number(root.dataset.gap) || 32;
+  const dir = (root.dataset.direction || 'left').toLowerCase(); // left|right
+  const pauseOnHover = root.dataset.pauseOnHover === 'true';
+
+  root.style.setProperty('--marquee-duration', `${speedSec}s`);
+  root.style.setProperty('--marquee-gap', `${gap}px`);
+  root.classList.toggle('marquee--hover-pause', pauseOnHover);
+  root.classList.toggle('marquee--dir-right', dir === 'right');
+
+  // Clean old clones and rebuild to ensure >= 2× width
+  const rebuild = ()=>{
+    Array.from(track.querySelectorAll('.marquee__item.__clone')).forEach(n => n.remove());
+    let clones = 0;
+    while(track.scrollWidth < viewport.clientWidth * 2 && clones < 40){
+      const clone = firstItem.cloneNode(true);
+      clone.classList.add('__clone');
+      clone.setAttribute('aria-hidden','true');
+      track.appendChild(clone);
+      clones++;
+    }
+  };
+
+  const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  ready.then(()=>{
+    rebuild();
+    if('ResizeObserver' in window){
+      const ro = new ResizeObserver(rebuild);
+      ro.observe(viewport);
+    }
+    window.addEventListener('resize', rebuild, {passive:true});
+  });
+}
+
+/* =========================
+   Boot
+   ========================= */
 document.addEventListener('DOMContentLoaded', () => {
   mountAnimationDemo();
   mountExperienceDemo();
+  initMarquee();
 });
