@@ -50,27 +50,26 @@
         <div id="animationMount" class="custom-mount" aria-live="polite"></div>
       </section>
 
-      <!-- 4) MARQUEE (Angkor, 2.3rem, theme bg, 1× speed) -->
-      <section id="marquee" class="section section--marquee"
-        style="--section-bg:var(--bg); --section-fg:var(--fg);" aria-label="Marquee">
-        <div class="marquee"
-             data-speed="18"           <!-- 1× baseline speed -->
-             data-gap="32"
-             data-direction="left"
-             data-pause-on-hover="true">
-          <div class="marquee__fade-left" aria-hidden="true"></div>
-          <div class="marquee__fade-right" aria-hidden="true"></div>
+<!-- 4) MARQUEE (Angkor, 1× speed, no hover pause) -->
+<section id="marquee" class="section section--marquee"
+  style="--section-bg:var(--bg); --section-fg:var(--fg);" aria-label="Marquee">
+  <div class="marquee"
+       data-speed="18"
+       data-gap="32"
+       data-direction="left"
+       data-pause-on-hover="false">
+    <div class="marquee__fade-left" aria-hidden="true"></div>
+    <div class="marquee__fade-right" aria-hidden="true"></div>
 
-          <div class="marquee__viewport">
-            <div class="marquee__track">
-              <!-- Edit this one; JS will clone for seamless loop -->
-              <span class="marquee__item" contenteditable="true" spellcheck="false">
-                EXPERIENCE ◈
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div class="marquee__viewport">
+      <div class="marquee__track">
+        <span class="marquee__item" contenteditable="true" spellcheck="false">
+          EXPERIENCE ◈
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
 
       <!-- 5) EXPERIENCE (custom code mount) -->
       <section id="experience" class="section"
