@@ -5,40 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>One-Pager Starter</title>
 
-    <!-- Inter Tight -->
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;600;700&display=swap" rel="stylesheet" />
-    
-    <!-- Angkor -->
     <link href="https://fonts.googleapis.com/css2?family=Angkor&family=Inter+Tight:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
-
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Page wrapper keeps max-width and padding consistent -->
     <div class="page">
+      <!-- Theme toggle -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">Auto</button>
 
-      <!-- Theme toggle (optional) -->
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        Auto
-      </button>
-
-      <!-- 1) HEADER (one-line) -->
-<header
-  id="header"
-  class="section section--header section--box full-bleed header-fill"
-  style="--section-bg:var(--elev); --section-fg:var(--fg); --section-radius:12px;"
->
-  <div class="header-inner">
-    <div class="header-measure">
-      <h1 id="headerTitle" class="header-title" aria-label="Ryan Farrar">
-        <span id="headerText" class="header-text">RYAN FARRAR</span>
-      </h1>
-    </div>
-  </div>
-</header>
+      <!-- 1) HEADER (one-line, bottom-aligned + JS-fit) -->
+      <header
+        id="header"
+        class="section section--header section--box full-bleed"
+        style="--section-bg:var(--elev); --section-fg:var(--fg); --section-radius:12px;"
+        aria-label="Header"
+      >
+        <div class="header-fill">
+          <div class="header-inner">
+            <div class="header-measure">
+              <h1 class="header-title" aria-label="Ryan Farrar">
+                <span id="headerText" class="header-text">RYAN FARRAR</span>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <!-- 2) SUBHEAD (two-line text box) -->
       <section id="subhead" class="section section--box"
@@ -49,25 +45,36 @@
 
       <!-- 3) ANIMATION (custom code mount) -->
       <section id="animation" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);">
+        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Animation">
         <div class="block-title">animation</div>
         <div id="animationMount" class="custom-mount" aria-live="polite"></div>
       </section>
 
-      <!-- 4) MARQUEE (one-line) -->
+      <!-- 4) MARQUEE (Angkor, 2.3rem, theme bg, 1× speed) -->
       <section id="marquee" class="section section--marquee"
-        style="--section-bg:var(--muted); --section-fg:var(--fg-muted);">
-        <div class="marquee">
-          <div class="marquee__track">
-            <span>marquee • marquee • marquee • marquee • marquee • </span>
-            <span aria-hidden="true">marquee • marquee • marquee • marquee • marquee • </span>
+        style="--section-bg:var(--bg); --section-fg:var(--fg);" aria-label="Marquee">
+        <div class="marquee"
+             data-speed="18"           <!-- 1× baseline speed -->
+             data-gap="32"
+             data-direction="left"
+             data-pause-on-hover="true">
+          <div class="marquee__fade-left" aria-hidden="true"></div>
+          <div class="marquee__fade-right" aria-hidden="true"></div>
+
+          <div class="marquee__viewport">
+            <div class="marquee__track">
+              <!-- Edit this one; JS will clone for seamless loop -->
+              <span class="marquee__item" contenteditable="true" spellcheck="false">
+                EXPERIENCE ◈
+              </span>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- 5) EXPERIENCE (custom code mount) -->
       <section id="experience" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);">
+        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Experience">
         <div class="block-title">experience</div>
         <div id="experienceMount" class="custom-mount"></div>
       </section>
@@ -80,10 +87,9 @@
 
       <!-- 7) APPS (4-column responsive image grid) -->
       <section id="apps" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);">
+        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Apps">
         <div class="block-title">apps</div>
         <div class="grid grid--apps">
-          <!-- Replace placeholders with your images -->
           <figure class="app">
             <img src="https://placehold.co/600x400" alt="App 1" />
             <figcaption>App 1</figcaption>
@@ -108,13 +114,13 @@
 
       <!-- 9) FOOTER (body text field) -->
       <footer id="footer" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg-muted);">
+        style="--section-bg:transparent; --section-fg:var(--fg-muted);" aria-label="Footer">
         <p class="body">footer — add any longer body copy here. You can put links, small print, etc.</p>
       </footer>
 
       <!-- 10) CONTACT (three-column CTAs) -->
       <section id="contact" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);">
+        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Contact">
         <div class="grid grid--contact">
           <a class="btn btn--ghost" href="#" rel="noopener">Email</a>
           <a class="btn btn--ghost" href="#" rel="noopener">LinkedIn</a>
