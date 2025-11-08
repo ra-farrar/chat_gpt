@@ -269,3 +269,12 @@ p, h1, h2, h3, h4, h5, h6 { margin: 0; }
 .grid{ outline:1px dashed rgba(var(--ol-gray),var(--debug)); outline-offset:-2px; }
 .custom-mount{ outline:2px dashed rgba(var(--ol-orange),var(--debug)); outline-offset:-2px; }
 .divider{ outline:2px dashed rgba(var(--ol-blue),var(--debug)); outline-offset:-2px; }
+
+/* Force Angkor on marquee text, and add + cursor on hover */
+.section--marquee .marquee__item {
+  font-family: "Angkor", "Inter Tight", system-ui, sans-serif;
+}
+
+.section--marquee:hover {
+  cursor: crosshair; /* standard plus-shaped cursor */
+}
