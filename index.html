@@ -1,1 +1,129 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>One-Pager Starter</title>
 
+    <!-- Inter Tight -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Angkor -->
+    <link href="https://fonts.googleapis.com/css2?family=Angkor&family=Inter+Tight:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Page wrapper keeps max-width and padding consistent -->
+    <div class="page">
+
+      <!-- Theme toggle (optional) -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        Auto
+      </button>
+
+      <!-- 1) HEADER (one-line) -->
+<header
+  id="header"
+  class="section section--header section--box full-bleed header-fill"
+  style="--section-bg:var(--elev); --section-fg:var(--fg); --section-radius:12px;"
+>
+  <div class="header-inner">
+    <div class="header-measure">
+      <h1 id="headerTitle" class="header-title" aria-label="Ryan Farrar">
+        <span id="headerText" class="header-text">RYAN FARRAR</span>
+      </h1>
+    </div>
+  </div>
+</header>
+
+      <!-- 2) SUBHEAD (two-line text box) -->
+      <section id="subhead" class="section section--box"
+        style="--section-bg:var(--elev); --section-fg:var(--fg); --section-radius:16px;">
+        <p class="lead">subhead line one goes here</p>
+        <p class="lead">subhead line two goes here</p>
+      </section>
+
+      <!-- 3) ANIMATION (custom code mount) -->
+      <section id="animation" class="section"
+        style="--section-bg:transparent; --section-fg:var(--fg);">
+        <div class="block-title">animation</div>
+        <div id="animationMount" class="custom-mount" aria-live="polite"></div>
+      </section>
+
+      <!-- 4) MARQUEE (one-line) -->
+      <section id="marquee" class="section section--marquee"
+        style="--section-bg:var(--muted); --section-fg:var(--fg-muted);">
+        <div class="marquee">
+          <div class="marquee__track">
+            <span>marquee • marquee • marquee • marquee • marquee • </span>
+            <span aria-hidden="true">marquee • marquee • marquee • marquee • marquee • </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5) EXPERIENCE (custom code mount) -->
+      <section id="experience" class="section"
+        style="--section-bg:transparent; --section-fg:var(--fg);">
+        <div class="block-title">experience</div>
+        <div id="experienceMount" class="custom-mount"></div>
+      </section>
+
+      <!-- 6) CTA (single button) -->
+      <section id="cta" class="section section--cta"
+        style="--section-bg:var(--elev); --section-fg:var(--fg); --section-radius:12px;">
+        <button class="btn btn--primary">CTA</button>
+      </section>
+
+      <!-- 7) APPS (4-column responsive image grid) -->
+      <section id="apps" class="section"
+        style="--section-bg:transparent; --section-fg:var(--fg);">
+        <div class="block-title">apps</div>
+        <div class="grid grid--apps">
+          <!-- Replace placeholders with your images -->
+          <figure class="app">
+            <img src="https://placehold.co/600x400" alt="App 1" />
+            <figcaption>App 1</figcaption>
+          </figure>
+          <figure class="app">
+            <img src="https://placehold.co/600x400" alt="App 2" />
+            <figcaption>App 2</figcaption>
+          </figure>
+          <figure class="app">
+            <img src="https://placehold.co/600x400" alt="App 3" />
+            <figcaption>App 3</figcaption>
+          </figure>
+          <figure class="app">
+            <img src="https://placehold.co/600x400" alt="App 4" />
+            <figcaption>App 4</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 8) LINE (divider) -->
+      <div id="line" class="divider" role="separator" aria-label="Section divider"></div>
+
+      <!-- 9) FOOTER (body text field) -->
+      <footer id="footer" class="section"
+        style="--section-bg:transparent; --section-fg:var(--fg-muted);">
+        <p class="body">footer — add any longer body copy here. You can put links, small print, etc.</p>
+      </footer>
+
+      <!-- 10) CONTACT (three-column CTAs) -->
+      <section id="contact" class="section"
+        style="--section-bg:transparent; --section-fg:var(--fg);">
+        <div class="grid grid--contact">
+          <a class="btn btn--ghost" href="#" rel="noopener">Email</a>
+          <a class="btn btn--ghost" href="#" rel="noopener">LinkedIn</a>
+          <a class="btn btn--ghost" href="#" rel="noopener">X / Twitter</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+  </body>
+</html>
