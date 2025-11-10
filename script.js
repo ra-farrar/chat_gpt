@@ -1,17 +1,20 @@
-/* =========================
-   Debug toggle (press "D")
-   ========================= */
-document.addEventListener('keydown', (e) => {
-  if (e.key && e.key.toLowerCase() === 'd') {
-    const v = getComputedStyle(document.documentElement)
-      .getPropertyValue('--debug').trim();
-    document.documentElement.style.setProperty('--debug', v === '1' ? '0' : '1');
-  }
-});
+// Debug outlines: press "D" to toggle
+(function () {
+  const KEY = 'debug-outlines';
+  const root = document.documentElement;
+  const saved = localStorage.getItem(KEY);
+  root.style.setProperty('--debug', saved === '1' ? '1' : '0');
 
-/* =========================
-   Theme handling
-   ========================= */
+  document.addEventListener('keydown', e => {
+    if (e.key.toLowerCase() !== 'd') return;
+    const curr = getComputedStyle(root).getPropertyValue('--debug').trim();
+    const next = curr === '1' ? '0' : '1';
+    root.style.setProperty('--debug', next);
+    localStorage.setItem(KEY, next);
+  });
+})();
+
+/* ========== Theme Handling ========== */
 const root = document.documentElement;
 const toggle = document.getElementById('themeToggle');
 
@@ -38,18 +41,19 @@ if (toggle) {
   applyTheme(getStoredTheme());
 }
 
-/* =========================
-   Demo mounts
-   ========================= */
+/* ========== Placeholder Mounts ========== */
 function mountAnimationDemo() {
   const el = document.getElementById('animationMount');
   if (!el) return;
   el.innerHTML = '';
   const dot = document.createElement('div');
-  Object.assign(dot.style, {
-    width: '16px', height: '16px', borderRadius: '50%', background: 'var(--accent)',
-    position: 'relative', left: '0', transition: 'left 400ms linear'
-  });
+  dot.style.width = '16px';
+  dot.style.height = '16px';
+  dot.style.borderRadius = '50%';
+  dot.style.background = 'var(--accent)';
+  dot.style.position = 'relative';
+  dot.style.left = '0';
+  dot.style.transition = 'left 400ms linear';
   el.appendChild(dot);
 
   let dir = 1;
@@ -73,117 +77,58 @@ function mountExperienceDemo() {
   `;
 }
 
-/* =========================
-   Header text fitting
-   ========================= */
-(function fitHeader(){
-  const measure = document.querySelector('#header .header-measure');
-  const text = document.getElementById('headerText');
-  if(!measure || !text) return;
+/* ========== Header text fitting (fills target width) ========== */
+(function fitHeader() {
+  const measureEl = document.querySelector('#header .header-measure');
+  const textEl = document.getElementById('headerText');
+  if (!measureEl || !textEl) return;
 
-  Object.assign(text.style, {
-    whiteSpace:'nowrap',
-    display:'inline-block',
-    width:'auto'
-  });
+  textEl.style.whiteSpace = 'nowrap';
+  textEl.style.display = 'inline-block';
+  textEl.style.width = 'auto';
 
-  const fit = ()=>{
-    const maxW = measure.clientWidth;
-    if(maxW <= 0) return;
-    text.style.fontSize='50px';
-    let lo = 6, hi = 2400;
-    for(let i=0;i<22;i++){
-      const mid = (lo+hi)/2;
-      text.style.fontSize = mid + 'px';
-      (text.scrollWidth > maxW) ? hi = mid : lo = mid;
+  function targetWidth() {
+    // We fit to .header-measure; CSS expands it to include the 3% side gutters
+    return measureEl.clientWidth;
+  }
+
+  function fit() {
+    const maxW = targetWidth();
+    if (maxW <= 0) return;
+
+    textEl.style.fontSize = '50px';
+    let low = 6, high = 2400;
+    for (let i = 0; i < 22; i++) {
+      const mid = (low + high) / 2;
+      textEl.style.fontSize = mid + 'px';
+      const w = textEl.scrollWidth;
+      if (w > maxW) high = mid; else low = mid;
     }
-    text.style.fontSize = (lo - 0.5) + 'px';
-  };
-
-  // Debounce via rAF to avoid thrashing
-  let scheduled = false;
-  const scheduleFit = ()=>{
-    if(scheduled) return;
-    scheduled = true;
-    requestAnimationFrame(()=>{
-      scheduled = false;
-      fit();
-    });
-  };
-
-  if('ResizeObserver' in window){
-    const ro = new ResizeObserver(scheduleFit);
-    ro.observe(measure);
-  } else {
-    window.addEventListener('resize', scheduleFit, {passive:true});
+    textEl.style.fontSize = (low - 0.5) + 'px';
   }
 
-  if(document.fonts && document.fonts.ready){
-    document.fonts.ready.then(scheduleFit);
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(fit);
+    ro.observe(measureEl);
   } else {
-    setTimeout(scheduleFit, 0);
+    window.addEventListener('resize', fit, { passive: true });
   }
 
-  document.addEventListener('visibilitychange', ()=>{
-    if(!document.hidden) scheduleFit();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fit);
+  } else {
+    setTimeout(fit, 0);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) fit();
   });
 
-  // Initial fit
   fit();
 })();
 
-/* =========================
-   Seamless Marquee
-   ========================= */
-function initMarquee(){
-  const root = document.querySelector('#marquee .marquee');
-  if(!root) return;
-
-  const viewport = root.querySelector('.marquee__viewport');
-  const track = root.querySelector('.marquee__track');
-  const firstItem = root.querySelector('.marquee__item');
-  if(!viewport || !track || !firstItem) return;
-
-  // Options
-  const speedSec = Number(root.dataset.speed) || 18;            // 1× speed baseline
-  const gap = Number(root.dataset.gap) || 32;
-  const dir = (root.dataset.direction || 'left').toLowerCase(); // left|right
-  const pauseOnHover = root.dataset.pauseOnHover === 'true';
-
-  root.style.setProperty('--marquee-duration', `${speedSec}s`);
-  root.style.setProperty('--marquee-gap', `${gap}px`);
-  root.classList.toggle('marquee--hover-pause', pauseOnHover);
-  root.classList.toggle('marquee--dir-right', dir === 'right');
-
-  // Clean old clones and rebuild to ensure >= 2× width
-  const rebuild = ()=>{
-    Array.from(track.querySelectorAll('.marquee__item.__clone')).forEach(n => n.remove());
-    let clones = 0;
-    while(track.scrollWidth < viewport.clientWidth * 2 && clones < 40){
-      const clone = firstItem.cloneNode(true);
-      clone.classList.add('__clone');
-      clone.setAttribute('aria-hidden','true');
-      track.appendChild(clone);
-      clones++;
-    }
-  };
-
-  const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-  ready.then(()=>{
-    rebuild();
-    if('ResizeObserver' in window){
-      const ro = new ResizeObserver(rebuild);
-      ro.observe(viewport);
-    }
-    window.addEventListener('resize', rebuild, {passive:true});
-  });
-}
-
-/* =========================
-   Boot
-   ========================= */
+/* ========== Mount demos on DOM ready ========== */
 document.addEventListener('DOMContentLoaded', () => {
   mountAnimationDemo();
   mountExperienceDemo();
-  initMarquee();
 });
