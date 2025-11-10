@@ -5,33 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>One-Pager Starter</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <!-- Inter Tight -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Angkor&family=Inter+Tight:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <!-- Angkor -->
+    <link href="https://fonts.googleapis.com/css2?family=Angkor&display=swap" rel="stylesheet" />
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- Page wrapper keeps max-width and padding consistent -->
     <div class="page">
-      <!-- Theme toggle -->
+      <!-- Theme toggle (optional) -->
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">Auto</button>
 
-      <!-- 1) HEADER (one-line, bottom-aligned + JS-fit) -->
+      <!-- 1) HEADER (one-line) -->
       <header
         id="header"
-        class="section section--header section--box full-bleed"
+        class="section section--header section--box full-bleed header-fill"
         style="--section-bg:var(--elev); --section-fg:var(--fg); --section-radius:12px;"
-        aria-label="Header"
       >
-        <div class="header-fill">
-          <div class="header-inner">
-            <div class="header-measure">
-              <h1 class="header-title" aria-label="Ryan Farrar">
-                <span id="headerText" class="header-text">RYAN FARRAR</span>
-              </h1>
-            </div>
+        <div class="header-inner">
+          <div class="header-measure">
+            <h1 id="headerTitle" class="header-title" aria-label="Ryan Farrar">
+              <span id="headerText" class="header-text">RYAN FARRAR</span>
+            </h1>
           </div>
         </div>
       </header>
@@ -45,35 +44,52 @@
 
       <!-- 3) ANIMATION (custom code mount) -->
       <section id="animation" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Animation">
+        style="--section-bg:transparent; --section-fg:var(--fg);">
         <div class="block-title">animation</div>
         <div id="animationMount" class="custom-mount" aria-live="polite"></div>
       </section>
 
-<!-- 4) MARQUEE (Angkor, 1× speed, no hover pause) -->
-<section id="marquee" class="section section--marquee"
-  style="--section-bg:var(--bg); --section-fg:var(--fg);" aria-label="Marquee">
-  <div class="marquee"
-       data-speed="18"
-       data-gap="32"
-       data-direction="left"
-       data-pause-on-hover="false">
-    <div class="marquee__fade-left" aria-hidden="true"></div>
-    <div class="marquee__fade-right" aria-hidden="true"></div>
-
-    <div class="marquee__viewport">
-      <div class="marquee__track">
-        <span class="marquee__item" contenteditable="true" spellcheck="false">
-          EXPERIENCE ◈
-        </span>
-      </div>
-    </div>
-  </div>
-</section>
+      <!-- 4) MARQUEE (transparent, non-selectable, seamless full-width flow) -->
+      <section id="marquee" class="section section--marquee" aria-label="Marquee">
+        <div class="marquee" role="marquee" aria-label="EXPERIENCE">
+          <div class="marquee__track">
+            <!-- Row A -->
+            <div class="marquee__row">
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+            </div>
+            <!-- Row B (duplicate of Row A for seamless loop) -->
+            <div class="marquee__row" aria-hidden="true">
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+              <span class="marquee__item">EXPERIENCE ◈</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- 5) EXPERIENCE (custom code mount) -->
       <section id="experience" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Experience">
+        style="--section-bg:transparent; --section-fg:var(--fg);">
         <div class="block-title">experience</div>
         <div id="experienceMount" class="custom-mount"></div>
       </section>
@@ -86,7 +102,7 @@
 
       <!-- 7) APPS (4-column responsive image grid) -->
       <section id="apps" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Apps">
+        style="--section-bg:transparent; --section-fg:var(--fg);">
         <div class="block-title">apps</div>
         <div class="grid grid--apps">
           <figure class="app">
@@ -113,13 +129,13 @@
 
       <!-- 9) FOOTER (body text field) -->
       <footer id="footer" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg-muted);" aria-label="Footer">
+        style="--section-bg:transparent; --section-fg:var(--fg-muted);">
         <p class="body">footer — add any longer body copy here. You can put links, small print, etc.</p>
       </footer>
 
       <!-- 10) CONTACT (three-column CTAs) -->
       <section id="contact" class="section"
-        style="--section-bg:transparent; --section-fg:var(--fg);" aria-label="Contact">
+        style="--section-bg:transparent; --section-fg:var(--fg);">
         <div class="grid grid--contact">
           <a class="btn btn--ghost" href="#" rel="noopener">Email</a>
           <a class="btn btn--ghost" href="#" rel="noopener">LinkedIn</a>
